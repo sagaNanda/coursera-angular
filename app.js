@@ -16,7 +16,7 @@ function LunchCheckController($scope) {
        if(len <=3){
         $scope.message = "Enjoy!";
       } else {
-        $scope.message = "Too much!";
+        $scope.message = "Too much!" ;
       }
   }
   };
