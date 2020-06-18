@@ -1,82 +1,66 @@
 (function () {
-'use strict';
-
-angular.module('ShoppingListCheckOff', [])
-.controller('ToBuyController', ToBuyController)
-.controller('AlreadyBoughtController', AlreadyBoughtController)
-.provider('ShoppingListCheckOffService', ShoppingListCheckOffServiceProvider);
-
-
-// LIST #1 - controller
-ToBuyController.$inject = ['ShoppingListCheckOffService'];
-function ToBuyController(ShoppingListCheckOffService) {
-  var list1 = this;
-  list1.items = ShoppingListCheckOffService.getToBuyItems();
-
-  list1.removeItem = function (itemIndex) {
-    ShoppingListCheckOffService.addBoughtItem(list1.items[itemIndex].name,list1.items[itemIndex].quantity);
-    ShoppingListCheckOffService.removeToBuyItem(itemIndex);
-  };
-}
-// LIST #2 - controller
-AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
-function AlreadyBoughtController(ShoppingListCheckOffService) {
-  var list2 = this;
-  list2.items = ShoppingListCheckOffService.getBoughtItems();
+  'use strict';
+  
+  angular.module('NarrowItDownApp', [])
+  .controller('NarrowItDownController', NarrowItDownController)
+  .service('NarrowItDownService', NarrowItDownService)
+  .constant('ApiBasePath', "https://davids-restaurant.herokuapp.com");
+  
+  
+  NarrowItDownController.$inject = ['NarrowItDownService'];
+  function NarrowItDownController(NarrowItDownService) {
+    var menu = this;
+  
+    var promise = NarrowItDownService.getMenuCategories();
+  
+    promise.then(function (response) {
+      menu.categories = response.data;
+    })
+    .catch(function (error) {
+      console.log("Something went terribly wrong.");
+    });
+  
+    menu.logMenuItems = function (shortName) {
+      var promise = NarrowItDownService.getMenuForCategory(shortName);
+  
+      promise.then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+    };
+  
+  }
 
   
-}
 
-function ShoppingListCheckOffService(boughtItems) {
+NarrowItDownService.$inject = ['$http', 'ApiBasePath'];
+function NarrowItDownService($http, ApiBasePath) {
   var service = this;
-  // List of buy shopping items
-  var toBuyItems = [
-    {
-      name: "Milk",
-      quantity: "2"
-    },
-    {
-      name: "Donuts",
-      quantity: "200"
-    },
-    {
-      name: "Cookies",
-      quantity: "300"
-    },
-    {
-      name: "Chocolate",
-      quantity: "5"
-    }
-  ];
-  service.addBoughtItem = function (itemName, quantity) {
-      var item = {
-        name: itemName,
-        quantity: quantity
-      };
-      boughtItems.push(item);
+
+  service.getMenuCategories = function () {
+    var response = $http({
+      method: "GET",
+      url: (ApiBasePath + "/categories.json")
+    });
+
+    return response;
   };
 
-  service.removeToBuyItem = function (itemIndex) {
-      toBuyItems.splice(itemIndex, 1);
+
+  service.getMenuForCategory = function (shortName) {
+    var response = $http({
+      method: "GET",
+      url: (ApiBasePath + "/menu_items.json"),
+      params: {
+        category: shortName
+      }
+    });
+
+    return response;
   };
 
-  service.getToBuyItems = function () {
-  
-      return toBuyItems;
-  };
-  service.getBoughtItems = function () {
-    return boughtItems;
-  };
 }
 
-function ShoppingListCheckOffServiceProvider() {
-  var provider = this;
-  provider.boughtItems=[];
-
-  provider.$get = function () {
-    var shoppingList = new ShoppingListCheckOffService(provider.boughtItems);
-
-    return shoppingList;
-  };
-}
 })();

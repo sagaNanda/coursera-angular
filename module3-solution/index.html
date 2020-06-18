@@ -1,13 +1,16 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app='NarrowItDownApp'>
   <head>
     <title>Narrow Down Your Menu Choice</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/bootstrap.min.css">
     <link rel="stylesheet" href="styles/styles.css">
+    <script src="jquery-3.1.0.min.js"></script>
+    <script src="angular.min.js"></script>
+    <script src="app.js"></script>
   </head>
 <body>
-   <div class="container">
+   <div class="container"  ng-controller='NarrowItDownController as menu'>
     <h1>Narrow Down Your Chinese Menu Choice</h1>
 
     <div class="form-group">
@@ -17,7 +20,14 @@
       <button class="btn btn-primary">Narrow It Down For Me!</button>
     </div>
     <!-- found-items should be implemented as a component -->
-    <found-items found-items="...." on-remove="...."></found-items>
+
+    <li ng-repeat="category in menu.categories">
+      (<a href="" ng-click="menu.logMenuItems(category.short_name);">{{ category.short_name }}</a>)
+      {{ category.name }}
+    </li>
+    <found-items found-items="menu.items" on-remove="list.removeItem(index)">
+
+    </found-items>
   </div>
 </body>
 </html>
