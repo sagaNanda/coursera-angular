@@ -31,9 +31,12 @@
   NarrowItDownController.$inject = ['MenuSearchService'];
   function NarrowItDownController(MenuSearchService) {
     var menu = this;
+  
     menu.logMenuItems = function (searchItem) {
+      if(searchItem !== "" || searchItem !== null || searchItem !== undefined){
 
         var promise = MenuSearchService.getMenuItems();
+  
         promise.then(function (response) {
           var items=response.data.menu_items;
           menu.found=MenuSearchService.getMatchedMenuItems(searchItem,items);
@@ -41,6 +44,10 @@
         .catch(function (error) {
           console.log(error);
         })
+      }
+      else {
+        throw new Error("Nothing Found");
+      }
       };
   
       menu.removeItem = function (itemIndex) {
