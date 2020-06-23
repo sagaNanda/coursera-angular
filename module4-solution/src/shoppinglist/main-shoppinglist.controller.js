@@ -5,10 +5,10 @@ angular.module('ShoppingList')
 .controller('MainShoppingListController', MainShoppingListController);
 
 
-MainShoppingListController.$inject = ['ShoppingListService', 'items'];
-function MainShoppingListController(ShoppingListService, items) {
-  var mainList = this;
-  mainList.items = items;
+MainShoppingListController.$inject = ['categories'];
+function MainShoppingListController(categories) {
+  var mainList=this;
+  mainList.categories=categories.data;
 }
 
 })();

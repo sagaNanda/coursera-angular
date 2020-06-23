@@ -1,3 +1,8 @@
-<div>Item name: {{ itemDetail.name }}</div>
-<div>Item quantity: {{ itemDetail.quantity }}</div>
-<div>Item description: {{ itemDetail.description }}</div>
+<h4>Menu Items in This Category</h4>
+<ol>
+    <li ng-repeat="menuItem in itemDetail.menu_items">
+      Short Name :{{ menuItem.short_name }} , <br> 
+      Name :{{ menuItem.name }} , <br>
+      Description: {{menuItem.description}}  <br>
+    </li>
+</ol>
