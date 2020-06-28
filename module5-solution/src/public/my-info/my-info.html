@@ -1,0 +1,35 @@
+<div class="container">
+  <h2 id="signup-title" class="text-center">Your Profile</h2>
+  <br>
+<div ng-if = "myInfoCtrl.completed">
+  <div>
+    <br>Firstname :{{myInfoCtrl.firstname}}
+    <br>LastName : {{myInfoCtrl.lastname}}
+    <br>Email : {{myInfoCtrl.email}}
+    <br>Phone : {{myInfoCtrl.phone}}
+    <br>Favourite Dish : {{myInfoCtrl.itemDetails.name}}
+    <br>
+    <br>
+  </div>
+  <br>
+<div class="menu-item-tile col-md-6">
+    <div class="row">
+      <div class="col-sm-5">
+        <div class="menu-item-photo">
+          <div>{{myInfoCtrl.itemDetails.short_name}}</div>
+          <img class="img-responsive" width="250" height="150" ng-src="{{myInfoCtrl.basePath}}/images/{{myInfoCtrl.itemDetails.short_name}}.jpg" alt="{{myInfoCtrl.itemDetails.name}}">
+        </div>
+        <div class="menu-item-price">{{myInfoCtrl.itemDetails.price_small | currency}}<span> {{myInfoCtrl.user.itemDetails.small_portion_name}}</span> {{myInfoCtrl.user.itemDetails.price_large | currency}} <span>{{myInfoCtrl.user.itemDetails.large_portion_name}}</span></div>
+      </div>
+      <div class="menu-item-description col-sm-7">
+        <h3 class="menu-item-title">{{myInfoCtrl.itemDetails.name}}</h3>
+        <p class="menu-item-details">{{myInfoCtrl.itemDetails.description}}</p>
+      </div>
+    </div>
+    <hr class="visible-xs">
+  </div>
+</div>
+<div ng-if="!myInfoCtrl.completed" >
+ <br> Not Signed Up Yet. <a ui-sref="public.signup"><span>Sign up Now !</span></div></a>
+</div>
+</div>
